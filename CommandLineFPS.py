@@ -1,25 +1,106 @@
 #!/usr/bin/env python3
 
-import io
+	"""See the license below.
+    
+    OneLoneCoder.com - Command Line First Person Shooter (FPS) Engine
+	"Why were games not done like this is 1990?" - @Javidx9
+    "Hey weren't you coding in 1990? You tell me. :)" - nuclearfall
+
+	License
+	~~~~~~~
+	Copyright (C) 2018  Javidx9
+	This program comes with ABSOLUTELY NO WARRANTY.
+	This is free software, and you are welcome to redistribute it
+	under certain conditions; See license for details.
+	Original works located at:
+	https://www.github.com/onelonecoder
+	https://www.onelonecoder.com
+	https://www.youtube.com/javidx9
+
+	GNU GPLv3
+	https://github.com/OneLoneCoder/videos/blob/master/LICENSE
+    
+
+	From Javidx9 :)
+	~~~~~~~~~~~~~~~
+	Hello! Ultimately I don't care what you use this for. It's intended to be
+	educational, and perhaps to the oddly minded - a little bit of fun.
+	Please hack this, change it and use it in any way you see fit. You acknowledge
+	that I am not responsible for anything bad that happens as a result of
+	your actions. However this code is protected by GNU GPLv3, see the license in the
+	github repo. This means you must attribute me if you use it. You can view this
+	license here: https://github.com/OneLoneCoder/videos/blob/master/LICENSE
+	Cheers!
+    
+    From nuclearfall (.cpp to .py)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    This is pretty much a straight up copy of Javidx9's CLFPS logic from C++/Windows 
+    to Python/*Nix. I utilize the curses library for display. Anything that makes
+    it look worse is probably my fault, but I'm unlikely to play with this much, as
+    it was a learning excercise. 
+    
+    If you want a better documented file, explaining exact goings on of the code,
+    you should download Javidx9's .cpp code. It has extensive documentation and
+    made it a lot easier for me to understand how ray tracing and shading works
+    in concept. Huge thanks go to Javidx9 for all of his work on video tutorials.
+
+	Background
+	~~~~~~~~~~
+	Whilst waiting for TheMexicanRunner to start the finale of his NesMania project,
+	his Twitch stream had a counter counting down for a couple of hours until it started.
+	With some time on my hands, I thought it might be fun to see what the graphical
+	capabilities of the console are. Turns out, not very much, but hey, it's nice to think
+	Wolfenstein could have existed a few years earlier, and in just ~200 lines of code.
+
+	IMPORTANT!!!!
+	~~~~~~~~~~~~~
+	READ ME BEFORE RUNNING!!! This program expects the console dimensions to be set to
+	120 Columns by 40 Rows. I recommend a small font "Consolas" at size 16. You can do this
+	by running the program, and right clicking on the console title bar, and specifying
+	the properties. You can also choose to default to them in the future.
+
+	Controls: A = Turn Left, D = Turn Right, W = Walk Forwards, S = Walk Backwards
+
+	Future Modifications
+	~~~~~~~~~~~~~~~~~~~~
+	1) Shade block segments based on angle from player, i.e. less light reflected off
+	walls at side of player. Walls straight on are brightest.
+	2) Find an interesting and optimised ray-tracing method. I'm sure one must exist
+	to more optimally search the map space.
+	3) Add bullets!
+	4) Add bad guys!
+
+	Author
+	~~~~~~
+	Twitter: @javidx9
+    
+	Blog: www.onelonecoder.com
+
+	Video:
+	~~~~~~
+	https://youtu.be/xW8skO7MFYw
+
+	Updated: 27/02/2017
+    Updated: 14/09/2019 (nuclear fall)"""
+
+
 from curses import wrapper
 import curses
 import time
-import locale
 import math
-import sys
 
 def main(stdscr):
     screenwidth = 120			# Console Screen Size X (columns)
     screenheight = 40;			# Console Screen Size Y (rows)
     mapwidth = 16;				# World Dimensions
     mapheight = 16;
-    playerx = 14.4      		# Player Start Position
-    playery = 15.4
-    playera = 3.14  		# Player Start Rotation
-    fov = 3.14159 / 4.0	    # Field of View
-    depth = 16.0			# Maximum rendering distance
-    speed = 8.0			# Walking Speed
-    turn_speed = 10.0
+    playerx = 14.4      		# Player Start Position 
+    playery = 15.4              # *nf- I changed the map a bit so the player starts at an entrance.
+    playera = 3.14159 		    # Player Start Rotation *nf - changed so character is facing west.*
+    fov = 3.14159 / 4.0	        # Field of View
+    depth = 16.0			    # Maximum rendering distance
+    speed = 5.0			        # Walking Speed *nf - You may need to adjust this*
+    turn_speed = 8.0            # *nf - I found turn speeds to be too slow at walking speed.*
 
     screen = ' ' * screenwidth * screenheight
     map = ''
@@ -47,13 +128,14 @@ def main(stdscr):
     start = time.time()
     elapsed = time.time()
 
-# We'll need time differential per frame to calculate modification to movement speeds, to ensure consistant movement, as ray-tracing is non-deterministic
+    # javidx9 - We'll need time differential per frame to calculate modification to movement speeds, 
+    # to ensure consistant movement, as ray-tracing is non-deterministic. 
+    # *^nf - This may be an issue with my movement speeds. I may not be properly timing things.*
 
-# Handle backwards movement & collision
-    while True:  # prevents initial division by zero
+    while True:  
+        # prevents initial division by zero
         if elapsed is 0.0:
             elasped = .001
-
         start = time.time()
         key = stdscr.getch()
         if key is ord('a'):
@@ -96,7 +178,7 @@ def main(stdscr):
                 else:
                     if map[int(testx * mapwidth + testy)] is '#':
                         has_hitwall = True
-
+                        # *nf - A CPP vector is basically equivalent to a top level python list*
                         p = []
                         for tx in range(2):
                             for ty in range(2):
@@ -117,7 +199,7 @@ def main(stdscr):
 
             ceiling = round((screenheight / 2.0) - screenheight / towall)
             floor = round(screenheight - ceiling)
-
+            
             shade = ' '
             if towall <= depth / 4:
                 shade = chr(0x2588)
@@ -163,18 +245,15 @@ def main(stdscr):
                 sindex = (y) * screenwidth + x
                 mindex = y * mapwidth + x
                 screen = screen[:sindex] + map[mindex] + screen[sindex+1:]
-
         index = int(playerx) * screenwidth + int(playery)
+        # *nf - It's easy to get lost without an indicator on the map of where you are.*
         screen = screen[:index] + 'P' + screen[index+1:]
-
 
         index = screenwidth * screenheight -1
         screen = screen[:index] + ''
         stdscr.addstr(0, 0, screen)
         stdscr.refresh()
         elapsed = time.time() - start
-
-
 
 
 wrapper(main)
