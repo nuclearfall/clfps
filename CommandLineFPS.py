@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
 
 	"""See the license below.
-    
-    OneLoneCoder.com - Command Line First Person Shooter (FPS) Engine
+    	
+    	OneLoneCoder.com - Command Line First Person Shooter (FPS) Engine
 	"Why were games not done like this is 1990?" - @Javidx9
-    "Hey weren't you coding in 1990? You tell me. :)" - nuclearfall
+    	"Weren't you coding in '90? You tell me." - nuclearfall
+	
+	As Javidx9's website name implies, I am not affiliated with onelonecoder
+	in any way. - nf
 
 	License
 	~~~~~~~
