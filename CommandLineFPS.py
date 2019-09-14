@@ -35,17 +35,17 @@
 	license here: https://github.com/OneLoneCoder/videos/blob/master/LICENSE
 	Cheers!
     
-    From nuclearfall (.cpp to .py)
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    This is pretty much a straight up copy of Javidx9's CLFPS logic from C++/Windows 
-    to Python/*Nix. I utilize the curses library for display. Anything that makes
-    it look worse is probably my fault, but I'm unlikely to play with this much, as
-    it was a learning excercise. 
+    	From nuclearfall (.cpp to .py)
+    	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   	This is pretty much a straight up copy of Javidx9's CLFPS logic from C++/Windows 
+   	to Python/*Nix. I utilize the curses library for display. Anything that makes
+   	it look worse is probably my fault, but I'm unlikely to play with this much, as
+   	it was a learning excercise. 
     
-    If you want a better documented file, explaining exact goings on of the code,
-    you should download Javidx9's .cpp code. It has extensive documentation and
-    made it a lot easier for me to understand how ray tracing and shading works
-    in concept. Huge thanks go to Javidx9 for all of his work on video tutorials.
+   	If you want a better documented file, explaining exact goings on of the code,
+   	you should download Javidx9's .cpp code. It has extensive documentation and
+    	made it a lot easier for me to understand how ray tracing and shading works
+    	in concept. Huge thanks go to Javidx9 for all of his work on video tutorials.
 
 	Background
 	~~~~~~~~~~
